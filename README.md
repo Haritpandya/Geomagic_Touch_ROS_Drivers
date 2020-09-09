@@ -1,95 +1,62 @@
-3D Systems Geomagic Touch ROS Driver
+3D Systems Geomagic Touch-X ROS Driver for Windows
 ============
 
-ROS Packages for 3D Systems Geomagic Touch haptic device, **USB** version.
+ROS Packages for 3D Systems Geomagic Touch-X haptic device, **USB** version.
 
-This repository has been forked from the original repository by Francisco Suárez Ruiz, [http://fsuarez6.github.io](http://fsuarez6.github.io) for the Sensable PHANToM haptic device (https://github.com/fsuarez6/phantom_omni).
-
-ROS packages developed by the [Group of Robots and Intelligent Machines](http://www.romin.upm.es/) from the [Universidad Politécnica de Madrid](http://www.upm.es/internacional). This group is part of the [Centre for Automation and Robotics](http://www.car.upm-csic.es/) (CAR UPM-CSIC). 
-
+This repository has been forked from the original repository by Bharat Mathur, [https://github.com/bharatm11/Geomagic_Touch_ROS_Drivers](https://github.com/bharatm11/Geomagic_Touch_ROS_Drivers) for the Touch-X haptic device in ubuntu. I have made a few changes to adapt it for touch-X model for working in windows 10. 
+###Tested with
+Touch-X, OpenHaptics3.5, MS Windows 64bit 10.0.18362, ROS-Melodic, Visual studio 2019, Windows SDK 10.0.18362.0
+###Additional Dependencies
+Pthreads
 ## Installation
 
-1. Install Dependencies
+1. Install ROS-melodic, Chocolatey, Git and Visual Studio on Windows
+Follow the instructions from:
+http://wiki.ros.org/Installation/Windows
 
+2. Setup Catkin workspace using VC comand prompt
 ```
-sudo apt-get install --no-install-recommends freeglut3-dev g++ libdrm-dev libexpat1-dev libglw1-mesa libglw1-mesa-dev libmotif-dev libncurses5-dev libraw1394-dev libx11-dev libxdamage-dev libxext-dev libxt-dev libxxf86vm-dev tcsh unzip x11proto-dri2-dev x11proto-gl-dev x11proto-print-dev
+cd \
+mkdir catkin_ws & cd catkin_ws & mkdir src
+catkin_make
 ```
 
-2. Download and Extract OpenHaptics and Haptic Device drivers
+3. Download and Install OpenHaptics 3.5 and Haptic Device drivers
+Download drivers using instructions at: 
+https://support.3dsystems.com/s/article/OpenHaptics-for-Windows-Developer-Edition-v35?language=en_US
 
-Download drivers using instructions at: https://3dsystems.teamplatform.com/pages/102863?t=fptvcy2zbkcc
-
-3. Install Openhaptics
-
+4. Install Dependencies: 
+Clone and make the Pthread repo following the instructions from 
+https://github.com/jwinarske/pthreads4w
+There are several seeting in which you can make Pthreads, I hva used VCE
 ```
-cd ~/openhaptics_3.4-0-developer-edition-amd64/
-sudo ./install
-# This gets installed in the following directory
-/opt/OpenHaptics/ 
+nmake realclean VCE
 ```
-4. Install Geomagic Driver
 
-```
-cd ~/geomagic_touch_device_driver_2015.5-26-amd64/
-sudo ./install
-# This gets installed in the following directory:
-/opt/geomagic_touch_device_driver/ 
-```
-5. **(Only For 64-bit Systems)** Create Symbolic Links to OpenHaptics SDK Libraries 
-```
-sudo ln -s /usr/lib/x86_64-linux-gnu/libraw1394.so.11.0.1 /usr/lib/libraw1394.so.8
-sudo ln -s /usr/lib64/libPHANToMIO.so.4.3 /usr/lib/libPHANToMIO.so.4
-sudo ln -s /usr/lib64/libHD.so.3.0.0 /usr/lib/libHD.so.3.0
-sudo ln -s /usr/lib64/libHL.so.3.0.0 /usr/lib/libHL.so.3.0 
-```
-6. Device setup
+5. Device setup
+Run Touch Smart Setup to setup and calibrate the device. Its a good idea to perform calibration everytime beore device is used.
 
-The haptic device always creates a COM Port as /dev/ttyACM0 and requires admin priviliges
-```
-chmod 777 /dev/ttyACM0
-```
-Run Geomagic_Touch_Setup in /opt/geomagic_touch_device_driver/
-
-Ensure that the device serial number is displayed 
-
-7. Device Diagnostics
-
-Run Geomagic_Touch_Diagnostic in /opt/geomagic_touch_device_driver/
-
-This can be used to calibrate the device, read encoders, apply test forces etc. 
 
 8. Launch ROS Node
 
 Clone and build this repository.
 ```
+cd <ROS_workspace> & catkin_make
 cd <ROS_workspace>/devel
 source setup.bash
 roslaunch omni_common omni_state.launch 
 ```
 
 Data from the haptic device can be read from the following topics:
-
   /phantom/button
-  
   /phantom/force_feedback
-  
   /phantom/joint_states
-  
   /phantom/pose
-  
   /phantom/state 
 
-## Resources
-
-https://3dsystems.teamplatform.com/pages/102863?t=fptvcy2zbkcc
-
-https://fsuarez6.github.io/projects/geomagic-touch-in-ros/
-
-https://github.com/fsuarez6/phantom_omni
-
-http://dsc.sensable.com/viewtopic.php?t=5730&sid=9866fe798e24bc745fdb7fce08ee99eb
-
-**Old device drivers** https://drive.google.com/drive/folders/1WJY6HpdtGh5zeyASfb4FYJFFG-QGItd6?usp=sharing
-
-
-
+## Directory structre assumed:
+C:\
++---opt
++---pthreads
++---catkin_ws
++---OpenHaptics

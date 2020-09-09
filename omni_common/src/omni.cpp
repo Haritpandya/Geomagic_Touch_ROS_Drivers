@@ -20,6 +20,7 @@
 
 #include "omni_msgs/OmniButtonEvent.h"
 #include "omni_msgs/OmniFeedback.h"
+#define HAVE_STRUCT_TIMESPEC
 #include <pthread.h>
 
 float prev_time;
@@ -165,10 +166,10 @@ public:
     pose_publisher.publish(pose_stamped);
 
     if ((state->buttons[0] != state->buttons_prev[0])
-        or (state->buttons[1] != state->buttons_prev[1])) {
+        || (state->buttons[1] != state->buttons_prev[1])) {
 
       if ((state->buttons[0] == state->buttons[1])
-          and (state->buttons[0] == 1)) {
+          && (state->buttons[0] == 1)) {
         state->lock = !(state->lock);
       }
       omni_msgs::OmniButtonEvent button_event;

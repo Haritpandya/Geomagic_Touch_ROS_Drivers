@@ -11,7 +11,7 @@
 #include <assert.h>
 #include <sstream>
 
-#include <HL/hl.h>
+#include "HL/hl.h"
 #include <HD/hd.h>
 #include <HDU/hduError.h>
 #include <HDU/hduVector.h>
@@ -204,7 +204,7 @@ public:
     pose_publisher.publish(pose_msg);
 
     if ((state->buttons[0] != state->buttons_prev[0])
-        or (state->buttons[1] != state->buttons_prev[1]))
+        | (state->buttons[1] != state->buttons_prev[1]))
     {
       if (state->buttons[0] == 1) {
         state->close_gripper = !(state->close_gripper);
@@ -333,7 +333,7 @@ void HHD_Auto_Calibration() {
     ROS_INFO("Calibration complete.");
   }
   while(hdCheckCalibration() != HD_CALIBRATION_OK) {
-    usleep(1e6);
+    Sleep(1e6);
     if (hdCheckCalibration() == HD_CALIBRATION_NEEDS_MANUAL_INPUT)
       ROS_INFO("Please place the device into the inkwell for calibration");
     else if (hdCheckCalibration() == HD_CALIBRATION_NEEDS_UPDATE) {
